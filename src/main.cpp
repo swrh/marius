@@ -5,16 +5,13 @@
 
 #include <boost/program_options.hpp>
 
+#include "core.hpp"
+
 using std::cout;
 using std::endl;
 using std::exception;
 
 namespace po = boost::program_options;
-
-static void
-run()
-{
-}
 
 int
 main(int argc, char *argv[])
@@ -35,7 +32,9 @@ main(int argc, char *argv[])
 	}
 
 	try {
-		run();
+		marius::core core;
+
+		core.run();
 	} catch (exception &e) {
 		warnx("unhandled exception: %s", e.what());
 		return EXIT_FAILURE;
