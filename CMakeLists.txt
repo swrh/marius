@@ -1,6 +1,7 @@
 # CMakeLists.txt
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+
 project(marius)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -18,13 +19,17 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
-find_package(SDL2 REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS})
+find_package(Boost 1.54.0 REQUIRED COMPONENTS
+	program_options
+	)
 
-include_directories(src)
+find_package(SDL2 REQUIRED)
+
+include_directories(${SDL2_INCLUDE_DIRS})
 
 file(GLOB_RECURSE marius_SOURCES
 	src/*.cpp
+	src/*.hpp
 	)
 
 add_executable(marius
@@ -32,12 +37,17 @@ add_executable(marius
 	)
 
 target_link_libraries(marius
-	${SDL2_LIBRARIES}
-	SDL2_image
-	SDL2_mixer
+	PUBLIC
+		${SDL2_LIBRARIES}
+		Boost::program_options
+	)
+
+target_include_directories(marius
+	PUBLIC
+		${SDL2_INCLUDE_DIRS}
+		Boost::program_options
 	)
 
 install(TARGETS marius
-	RUNTIME DESTINATION
-	bin
+	RUNTIME DESTINATION bin
 	)
