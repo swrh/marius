@@ -1,6 +1,6 @@
 # CMakeLists.txt
 
-cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(marius)
 
@@ -9,8 +9,6 @@ set(CMAKE_CXX_STANDARD 14)
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
 		string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
@@ -19,7 +17,8 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
-find_package(Boost 1.54.0 REQUIRED COMPONENTS
+find_package(Boost 1.71.0 REQUIRED COMPONENTS
+	stacktrace_backtrace
 	program_options
 	)
 
@@ -36,16 +35,24 @@ add_executable(marius
 	${marius_SOURCES}
 	)
 
+target_compile_definitions(marius
+	PRIVATE
+		BOOST_STACKTRACE_USE_BACKTRACE
+	)
+
 target_link_libraries(marius
 	PUBLIC
 		${SDL2_LIBRARIES}
 		Boost::program_options
+		Boost::stacktrace_backtrace
+		dl
 	)
 
 target_include_directories(marius
 	PUBLIC
 		${SDL2_INCLUDE_DIRS}
 		Boost::program_options
+		Boost::stacktrace_backtrace
 	)
 
 install(TARGETS marius

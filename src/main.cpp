@@ -6,6 +6,7 @@
 #include <boost/program_options.hpp>
 
 #include "core.hpp"
+#include "exceptions.hpp"
 
 using std::cout;
 using std::endl;
@@ -37,6 +38,10 @@ main(int argc, char *argv[])
 		core.run();
 	} catch (exception &e) {
 		warnx("unhandled exception: %s", e.what());
+		const boost::stacktrace::stacktrace* st = boost::get_error_info<marius::traced>(e);
+		if (st) {
+			std::cerr << *st << '\n';
+		}
 		return EXIT_FAILURE;
 	}
 
