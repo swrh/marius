@@ -11,6 +11,7 @@
 using std::cout;
 using std::endl;
 using std::exception;
+using std::ostringstream;
 
 namespace po = boost::program_options;
 
@@ -37,12 +38,13 @@ main(int argc, char *argv[])
 
 		core.run();
 	} catch (exception &e) {
-		warnx("unhandled exception: %s", e.what());
+		ostringstream os;
+		os << e.what();
 		const boost::stacktrace::stacktrace* st = boost::get_error_info<marius::traced>(e);
 		if (st) {
-			std::cerr << *st << '\n';
+			os << '\n' << *st;
 		}
-		return EXIT_FAILURE;
+		errx(EXIT_FAILURE, "Unhandled exception: %s", os.str().c_str());
 	}
 
 	return EXIT_SUCCESS;
