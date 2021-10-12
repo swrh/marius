@@ -47,7 +47,7 @@ inline init_ptr init(Uint32 flags)
 {
 	init_ptr ptr = make_resource(detail::CreateInit, detail::DestroyInit, flags);
 	if (!ptr) {
-		throw_with_trace(std::runtime_error(SDL_GetError()));
+		THROW(std::runtime_error(SDL_GetError()));
 	}
 	return ptr;
 }
