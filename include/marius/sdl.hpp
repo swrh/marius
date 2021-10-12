@@ -1,15 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <string>
 
 #include <SDL.h>
+#include <SDL_image.h>
 
 #include "marius/exceptions.hpp"
 
 namespace marius {
-
-namespace sdl {
 
 template <typename Creator, typename Destructor, typename... Args>
 auto make_resource(Creator c, Destructor d, Args&&... args)
@@ -17,6 +15,8 @@ auto make_resource(Creator c, Destructor d, Args&&... args)
 	auto r = c(std::forward<Args>(args)...);
 	return std::unique_ptr<std::decay_t<decltype(*r)>, decltype(d)>(r, d);
 }
+
+namespace sdl {
 
 namespace detail {
 
@@ -45,6 +45,37 @@ using init_ptr = std::unique_ptr<detail::Init, decltype(&detail::DestroyInit)>;
 using window_ptr = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
 using renderer_ptr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
 
+}
+
+namespace img {
+
+namespace detail {
+
+using Init = int;
+
+inline Init *CreateInit(IMG_InitFlags flags)
+{
+	Init *p = nullptr;
+	if (IMG_Init(flags) == flags) {
+		p = new Init{0};
+	}
+	return p;
+}
+
+inline void DestroyInit(Init *p)
+{
+	if (p) {
+		delete p;
+		IMG_Quit();
+	}
+}
+
+}
+
+using init_ptr = std::unique_ptr<detail::Init, decltype(&detail::DestroyInit)>;
+
+}
+
 #define RETURN_RESOURCE(args...) do { \
 	auto ptr = make_resource(args); \
 	if (!ptr) { \
@@ -52,6 +83,8 @@ using renderer_ptr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer
 	} \
 	return ptr; \
 } while (0)
+
+namespace sdl {
 
 inline init_ptr init(Uint32 flags)
 {
@@ -68,8 +101,17 @@ inline renderer_ptr create_renderer(const window_ptr &window, int x, Uint32 flag
 	RETURN_RESOURCE(SDL_CreateRenderer, SDL_DestroyRenderer, window.get(), x, flags);
 }
 
-#undef RETURN_RESOURCE
+}
+
+namespace img {
+
+inline init_ptr init(IMG_InitFlags flags)
+{
+	RETURN_RESOURCE(detail::CreateInit, detail::DestroyInit, flags);
+}
 
 }
+
+#undef RETURN_RESOURCE
 
 }

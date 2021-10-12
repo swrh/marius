@@ -42,6 +42,7 @@ target_compile_definitions(marius
 target_link_libraries(marius
 	PUBLIC
 		${SDL2_LIBRARIES}
+		SDL2_image
 		Boost::log
 		Boost::program_options
 		Boost::stacktrace_backtrace
