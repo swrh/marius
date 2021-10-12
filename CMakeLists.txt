@@ -25,11 +25,9 @@ find_package(Boost 1.71.0 REQUIRED COMPONENTS
 
 find_package(SDL2 REQUIRED)
 
-include_directories(${SDL2_INCLUDE_DIRS})
-
 file(GLOB_RECURSE marius_SOURCES
+	include/*.hpp
 	src/*.cpp
-	src/*.hpp
 	)
 
 add_executable(marius
@@ -51,8 +49,10 @@ target_link_libraries(marius
 	)
 
 target_include_directories(marius
-	PUBLIC
+	PRIVATE
 		${SDL2_INCLUDE_DIRS}
+	PUBLIC
+		include
 	)
 
 install(TARGETS marius

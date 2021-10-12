@@ -1,7 +1,7 @@
-#include "core.hpp"
+#include "marius/core.hpp"
 
-#include "exceptions.hpp"
-#include "log.hpp"
+#include "marius/exceptions.hpp"
+#include "marius/log.hpp"
 
 namespace marius {
 

@@ -5,8 +5,8 @@
 
 #include <boost/program_options.hpp>
 
-#include "core.hpp"
-#include "exceptions.hpp"
+#include "marius/core.hpp"
+#include "marius/exceptions.hpp"
 
 using std::cout;
 using std::endl;
