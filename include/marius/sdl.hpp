@@ -1,8 +1,13 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include <SDL.h>
+
+#include "marius/exceptions.hpp"
+
+namespace marius {
 
 namespace sdl {
 
@@ -40,7 +45,13 @@ using init_ptr = std::unique_ptr<detail::Init, decltype(&detail::DestroyInit)>;
 
 inline init_ptr init(Uint32 flags)
 {
-	return make_resource(detail::CreateInit, detail::DestroyInit, flags);
+	init_ptr ptr = make_resource(detail::CreateInit, detail::DestroyInit, flags);
+	if (!ptr) {
+		throw_with_trace(std::runtime_error(SDL_GetError()));
+	}
+	return ptr;
+}
+
 }
 
 }
