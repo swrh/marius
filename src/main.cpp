@@ -7,6 +7,7 @@
 
 #include "marius/core.hpp"
 #include "marius/exceptions.hpp"
+#include "marius/log.hpp"
 
 using std::cout;
 using std::endl;
@@ -34,9 +35,13 @@ main(int argc, char *argv[])
 	}
 
 	try {
+		LINFO() << "Initializing game...";
 		marius::core core;
 
+		LINFO() << "Running...";
 		core.run();
+
+		LINFO() << "Game stopped.";
 	} catch (exception &e) {
 		ostringstream os;
 		os << e.what();
