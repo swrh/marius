@@ -18,8 +18,8 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 endif()
 
 find_package(Boost 1.71.0 REQUIRED COMPONENTS
-	stacktrace_backtrace
 	program_options
+	stacktrace_backtrace
 	)
 
 find_package(SDL2 REQUIRED)
@@ -51,8 +51,6 @@ target_link_libraries(marius
 target_include_directories(marius
 	PUBLIC
 		${SDL2_INCLUDE_DIRS}
-		Boost::program_options
-		Boost::stacktrace_backtrace
 	)
 
 install(TARGETS marius
