@@ -12,9 +12,13 @@ entity::entity(const sdl::renderer_ptr &renderer, const char *texture_file, int 
 }
 
 void
-entity::render()
+entity::render() const
 {
-	tileset_.render(tile_, renderer_, position_);
+	const SDL_Rect &source = tileset_.get_tile(tile_);
+
+	if (SDL_RenderCopy(renderer_.get(), texture_.get(), &source, &position_) != 0) {
+		THROW(std::runtime_error(SDL_GetError()));
+	}
 }
 
 }
