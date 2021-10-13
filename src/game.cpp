@@ -1,20 +1,20 @@
-#include "marius/core.hpp"
+#include "marius/game.hpp"
 
 namespace marius {
 
-core::core()
+game::game()
 	: sdl_init_(sdl::init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO))
 	, img_init_(img::init(IMG_INIT_PNG))
 	, window_("Marius", 1024, 768)
 {
 }
 
-core::~core()
+game::~game()
 {
 }
 
 void
-core::run()
+game::run()
 {
 	bool running = true;
 

@@ -5,7 +5,7 @@
 
 namespace marius {
 
-class core
+class game
 {
 private:
 	const sdl::init_ptr sdl_init_;
@@ -13,8 +13,8 @@ private:
 	window window_;
 
 public:
-	core();
-	~core();
+	game();
+	~game();
 
 	void run();
 

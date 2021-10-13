@@ -5,7 +5,7 @@
 
 #include <boost/program_options.hpp>
 
-#include "marius/core.hpp"
+#include "marius/game.hpp"
 #include "marius/exceptions.hpp"
 #include "marius/log.hpp"
 
@@ -36,10 +36,10 @@ main(int argc, char *argv[])
 
 	try {
 		LINFO() << "Initializing game...";
-		marius::core core;
+		marius::game game;
 
 		LINFO() << "Running...";
-		core.run();
+		game.run();
 
 		LINFO() << "Game stopped.";
 	} catch (exception &e) {
