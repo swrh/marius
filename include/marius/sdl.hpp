@@ -44,6 +44,7 @@ inline void DestroyInit(Init *p)
 using init_ptr = std::unique_ptr<detail::Init, decltype(&detail::DestroyInit)>;
 using window_ptr = std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)>;
 using renderer_ptr = std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)>;
+using texture_ptr = std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)>;
 
 }
 
@@ -108,6 +109,11 @@ namespace img {
 inline init_ptr init(IMG_InitFlags flags)
 {
 	RETURN_RESOURCE(detail::CreateInit, detail::DestroyInit, flags);
+}
+
+inline sdl::texture_ptr load_texture(const sdl::renderer_ptr &renderer, const char *path)
+{
+	RETURN_RESOURCE(IMG_LoadTexture, SDL_DestroyTexture, renderer.get(), path);
 }
 
 }

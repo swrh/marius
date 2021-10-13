@@ -30,6 +30,8 @@ file(GLOB_RECURSE marius_SOURCES
 	src/*.cpp
 	)
 
+file(COPY assets DESTINATION .)
+
 add_executable(marius
 	${marius_SOURCES}
 	)
