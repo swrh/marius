@@ -8,8 +8,8 @@ class
 window
 {
 private:
-	const sdl::window_ptr sdl_window_;
-	const sdl::renderer_ptr sdl_renderer_;
+	const sdl::window_ptr window_;
+	const sdl::renderer_ptr renderer_;
 	const sdl::texture_ptr player_texture_;
 
 public:
