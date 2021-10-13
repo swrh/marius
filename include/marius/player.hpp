@@ -1,24 +1,15 @@
 #pragma once
 
-#include "marius/sdl.hpp"
-#include "marius/tileset.hpp"
+#include "marius/entity.hpp"
 
 namespace marius {
 
 class
 player
+: public entity
 {
-private:
-	const sdl::renderer_ptr &renderer_;
-	const sdl::texture_ptr texture_;
-
-	SDL_Rect position_;
-	const tileset tileset_;
-
 public:
 	player(const sdl::renderer_ptr &renderer);
-
-	void render();
 };
 
 }
