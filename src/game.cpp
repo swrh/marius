@@ -1,5 +1,7 @@
 #include "marius/game.hpp"
 
+#include <chrono>
+
 #include "marius/scene_chaos.hpp"
 
 namespace marius {
@@ -25,18 +27,60 @@ game::~game()
 void
 game::run()
 {
+	using std::chrono::milliseconds;
+
+	constexpr milliseconds maximum_update_ticks{16};
+	constexpr milliseconds minimum_render_ticks{16}, maximum_render_ticks{1000};
+
+	milliseconds last_render_tick{0}, last_update_tick{0}, current_tick{0};
+
 	bool running = true;
 
 	SDL_Event event;
 
 	while (running) {
-		while (SDL_PollEvent(&event)) {
+		const milliseconds next_render_tick = last_render_tick + minimum_render_ticks;
+		const milliseconds next_render_tick_limit = last_render_tick + maximum_render_ticks;
+
+		do {
+			const bool event_arrived = SDL_WaitEventTimeout(&event, std::max(milliseconds(0), (next_render_tick - current_tick)).count()) == 1;
+			current_tick = milliseconds(SDL_GetTicks());
+
+			while ((last_update_tick + maximum_update_ticks) < current_tick) {
+				last_update_tick += maximum_update_ticks;
+				update(last_update_tick);
+			}
+
+			if (!event_arrived) {
+				last_update_tick = current_tick;
+				update(last_update_tick);
+				break;
+			}
+
 			if (event.type == SDL_QUIT) {
 				running = false;
+				break;
 			}
+
+			current_tick = milliseconds(SDL_GetTicks());
+		} while (current_tick < next_render_tick_limit);
+
+		if (!running) {
+			break;
 		}
 
 		render();
+		last_render_tick = last_update_tick;
+
+		current_tick = milliseconds(SDL_GetTicks());
+	}
+}
+
+void
+game::update(const std::chrono::milliseconds &now)
+{
+	if (current_scene_) {
+		current_scene_->update(now);
 	}
 }
 

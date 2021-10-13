@@ -1,12 +1,14 @@
 #pragma once
 
+#include <chrono>
 #include <memory>
 #include <vector>
 
-#include "marius/scene.hpp"
 #include "marius/sdl.hpp"
 
 namespace marius {
+
+class scene;
 
 class game
 {
@@ -26,6 +28,7 @@ public:
 	void run();
 
 protected:
+	void update(const std::chrono::milliseconds &now);
 	void render();
 
 };

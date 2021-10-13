@@ -7,4 +7,9 @@ player::player(const sdl::renderer_ptr &renderer)
 {
 }
 
+void
+player::update(const std::chrono::milliseconds &now)
+{
+}
+
 }

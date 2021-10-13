@@ -15,6 +15,7 @@ private:
 public:
 	scene_chaos(const sdl::renderer_ptr &renderer);
 
+	void update(const std::chrono::milliseconds &now) override;
 	void render() override;
 };
 

@@ -10,6 +10,8 @@ player
 {
 public:
 	player(const sdl::renderer_ptr &renderer);
+
+	void update(const std::chrono::milliseconds &now) override;
 };
 
 }

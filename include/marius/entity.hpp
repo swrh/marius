@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "marius/sdl.hpp"
 #include "marius/tileset.hpp"
 
@@ -20,6 +22,7 @@ protected:
 	entity(const sdl::renderer_ptr &renderer, const char *texture_file, int tile_width, int tile_height);
 
 public:
+	virtual void update(const std::chrono::milliseconds &now) = 0;
 	void render() const;
 };
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <chrono>
+
 #include "marius/sdl.hpp"
 
 namespace marius {
@@ -17,6 +19,7 @@ public:
 	virtual ~scene();
 
 public:
+	virtual void update(const std::chrono::milliseconds &now) = 0;
 	virtual void render() = 0;
 };
 

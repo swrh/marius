@@ -9,6 +9,12 @@ scene_chaos::scene_chaos(const sdl::renderer_ptr &renderer)
 }
 
 void
+scene_chaos::update(const std::chrono::milliseconds &now)
+{
+	player_.update(now);
+}
+
+void
 scene_chaos::render()
 {
 	player_.render();
