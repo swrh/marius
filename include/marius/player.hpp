@@ -12,6 +12,7 @@ private:
 	const sdl::renderer_ptr &renderer_;
 	const sdl::texture_ptr texture_;
 
+	SDL_Rect position_;
 	const tileset tileset_;
 
 public:

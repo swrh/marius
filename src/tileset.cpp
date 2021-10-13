@@ -30,13 +30,13 @@ tileset::tileset(const sdl::texture_ptr &texture, int tile_width, int tile_heigh
 }
 
 void
-tileset::render(const unsigned int n, const sdl::renderer_ptr &renderer, const SDL_Rect *destination) const
+tileset::render(const unsigned int n, const sdl::renderer_ptr &renderer, const SDL_Rect &destination) const
 {
 	if (n >= tiles_.size()) {
 		THROW(std::runtime_error("invalid tile number"));
 	}
 
-	if (SDL_RenderCopy(renderer.get(), texture_.get(), &tiles_[n], destination) != 0) {
+	if (SDL_RenderCopy(renderer.get(), texture_.get(), &tiles_[n], &destination) != 0) {
 		THROW(std::runtime_error(SDL_GetError()));
 	}
 }
