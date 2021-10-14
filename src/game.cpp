@@ -44,53 +44,43 @@ game::run()
 {
 	using std::chrono::milliseconds;
 
-	constexpr milliseconds maximum_update_ticks{16};
-	constexpr milliseconds minimum_render_ticks{16}, maximum_render_ticks{1000};
+	constexpr milliseconds update_period{16};
+	constexpr milliseconds minimum_render_period{16}, maximum_render_period{1000};
 
 	milliseconds last_render_tick{0}, last_update_tick{0}, current_tick{0};
 
-	bool running = true;
-
 	SDL_Event event;
 
-	while (running) {
-		const milliseconds next_render_tick = last_render_tick + minimum_render_ticks;
-		const milliseconds next_render_tick_limit = last_render_tick + maximum_render_ticks;
+	for (;;) {
+		const milliseconds next_render = last_render_tick + minimum_render_period;
+		const milliseconds next_render_limit = last_render_tick + maximum_render_period;
 
 		do {
-			const bool event_arrived = SDL_WaitEventTimeout(&event, std::max(milliseconds(0), (next_render_tick - current_tick)).count()) == 1;
+			const bool event_arrived = SDL_WaitEventTimeout(&event, std::max(milliseconds{0}, (next_render - current_tick)).count()) == 1;
 			current_tick = milliseconds(SDL_GetTicks());
 
-			while ((last_update_tick + maximum_update_ticks) < current_tick) {
-				last_update_tick += maximum_update_ticks;
+			while ((last_update_tick + update_period) < current_tick) {
+				last_update_tick += update_period;
 				update(last_update_tick);
 			}
 
 			if (!event_arrived) {
-				last_update_tick = current_tick;
-				update(last_update_tick);
 				break;
 			}
 
 			if (event.type == SDL_QUIT) {
-				running = false;
-				break;
+				return;
 			}
 
-			if (handle_event(current_tick, event)) {
-				last_update_tick = current_tick;
-				update(last_update_tick);
-			}
+			handle_event(last_update_tick, event);
 
 			current_tick = milliseconds(SDL_GetTicks());
-		} while (current_tick < next_render_tick_limit);
+		} while (current_tick < next_render_limit);
 
-		if (!running) {
-			break;
+		if (last_render_tick != last_update_tick) {
+			render();
+			last_render_tick = last_update_tick;
 		}
-
-		render();
-		last_render_tick = last_update_tick;
 
 		current_tick = milliseconds(SDL_GetTicks());
 	}

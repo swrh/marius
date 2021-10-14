@@ -18,6 +18,9 @@ protected:
 	unsigned int tile_;
 	const tileset tileset_;
 
+	bool flip_horizontal_;
+	bool flip_vertical_;
+
 protected:
 	entity(const sdl::renderer_ptr &renderer, const char *texture_file, int tile_width, int tile_height);
 
