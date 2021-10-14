@@ -14,12 +14,11 @@ protected:
 	const sdl::renderer_ptr &renderer_;
 	const sdl::texture_ptr texture_;
 
-	SDL_Rect position_;
+	SDL_Rect render_position_;
 	unsigned int tile_;
 	const tileset tileset_;
 
-	bool flip_horizontal_;
-	bool flip_vertical_;
+	unsigned int flip_;
 
 protected:
 	entity(const sdl::renderer_ptr &renderer, const char *texture_file, int tile_width, int tile_height);
