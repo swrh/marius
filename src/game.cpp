@@ -11,6 +11,7 @@ game::game()
 	, img_init_(img::init(IMG_INIT_PNG))
 	, window_(sdl::create_window("Marius", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 768, SDL_WINDOW_SHOWN))
 	, renderer_(sdl::create_renderer(window_, -1, SDL_RENDERER_ACCELERATED))
+	, event_dispatcher_{[](const std::chrono::milliseconds &, const SDL_Event &) { return false; }}
 	, current_scene_{nullptr}
 {
 	scenes_.reserve(1);
@@ -18,6 +19,20 @@ game::game()
 	scenes_.push_back(std::make_unique<scene_chaos>(renderer_));
 
 	current_scene_ = scenes_.at(0).get();
+
+	// Event handling
+	event_dispatcher_.on(SDL_KEYDOWN, [this](const std::chrono::milliseconds &now, const SDL_Event &event) {
+		if (event.key.repeat != 0 || !current_scene_) {
+			return false;
+		}
+		return current_scene_->handle_keydown(now, event.key.keysym.sym);
+	});
+	event_dispatcher_.on(SDL_KEYUP, [this](const std::chrono::milliseconds &now, const SDL_Event &event) {
+		if (event.key.repeat != 0 || !current_scene_) {
+			return false;
+		}
+		return current_scene_->handle_keyup(now, event.key.keysym.sym);
+	});
 }
 
 game::~game()
@@ -62,6 +77,11 @@ game::run()
 				break;
 			}
 
+			if (handle_event(current_tick, event)) {
+				last_update_tick = current_tick;
+				update(last_update_tick);
+			}
+
 			current_tick = milliseconds(SDL_GetTicks());
 		} while (current_tick < next_render_tick_limit);
 
@@ -76,12 +96,16 @@ game::run()
 	}
 }
 
+bool
+game::handle_event(const std::chrono::milliseconds &now, const SDL_Event &event)
+{
+	return event_dispatcher_.handle(event.type, now, event);
+}
+
 void
 game::update(const std::chrono::milliseconds &now)
 {
-	if (current_scene_) {
-		current_scene_->update(now);
-	}
+	current_scene_->update(now);
 }
 
 void
@@ -89,9 +113,7 @@ game::render()
 {
 	SDL_RenderClear(renderer_.get());
 
-	if (current_scene_) {
-		current_scene_->render();
-	}
+	current_scene_->render();
 
 	SDL_RenderPresent(renderer_.get());
 }

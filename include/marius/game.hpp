@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+#include "marius/dispatcher.hpp"
 #include "marius/sdl.hpp"
 
 namespace marius {
@@ -18,8 +19,10 @@ private:
 	const sdl::window_ptr window_;
 	const sdl::renderer_ptr renderer_;
 
-	scene *current_scene_;
+	dispatcher<bool (const std::chrono::milliseconds &, const SDL_Event &)> event_dispatcher_;
+
 	std::vector<std::unique_ptr<scene>> scenes_;
+	scene *current_scene_;
 
 public:
 	game();
@@ -28,6 +31,7 @@ public:
 	void run();
 
 protected:
+	bool handle_event(const std::chrono::milliseconds &now, const SDL_Event &event);
 	void update(const std::chrono::milliseconds &now);
 	void render();
 
