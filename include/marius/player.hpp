@@ -9,13 +9,13 @@ player
 : public entity
 {
 private:
-	const int maximum_speed_;
-	const int acceleration_;
+	const int maximum_horizontal_speed_, maximum_vertical_speed_;
+	const int acceleration_, gravity_;
 
-	int current_speed_;
-	int last_horizontal_direction_, last_vertical_direction_;
+	int horizontal_speed_, vertical_speed_;
 
 	bool left_, right_, up_, down_;
+	bool jump_;
 	SDL_Rect position_;
 
 	std::chrono::milliseconds last_update_;
