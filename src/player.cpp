@@ -4,8 +4,8 @@
 
 namespace marius {
 
-player::player(const sdl::renderer_ptr &renderer)
-	: entity{renderer, "assets/player_tilesheet.png", 80, 110}
+player::player(const viewport &viewport)
+	: entity{viewport, "assets/player_tilesheet.png", 80, 110}
 	, maximum_horizontal_speed_{50}
 	, maximum_vertical_speed_{75}
 	, acceleration_{2}

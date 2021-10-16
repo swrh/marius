@@ -4,6 +4,7 @@
 
 #include "marius/sdl.hpp"
 #include "marius/tileset.hpp"
+#include "marius/viewport.hpp"
 
 namespace marius {
 
@@ -11,7 +12,7 @@ class
 entity
 {
 protected:
-	const sdl::renderer_ptr &renderer_;
+	const viewport &viewport_;
 	const sdl::texture_ptr texture_;
 
 	SDL_Rect render_position_;
@@ -21,7 +22,7 @@ protected:
 	unsigned int flip_;
 
 protected:
-	entity(const sdl::renderer_ptr &renderer, const char *texture_file, int tile_width, int tile_height);
+	entity(const viewport &viewport, const char *texture_file, int tile_width, int tile_height);
 
 public:
 	virtual void update(const std::chrono::milliseconds &now) = 0;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "marius/entity.hpp"
+#include "marius/viewport.hpp"
 
 namespace marius {
 
@@ -21,7 +22,7 @@ private:
 	std::chrono::milliseconds last_update_;
 
 public:
-	player(const sdl::renderer_ptr &renderer);
+	player(const viewport &viewport);
 
 	void set_left(bool enabled);
 	void set_right(bool enabled);

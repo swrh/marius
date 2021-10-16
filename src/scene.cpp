@@ -2,8 +2,8 @@
 
 namespace marius {
 
-scene::scene(const sdl::renderer_ptr &renderer)
-	: renderer_(renderer)
+scene::scene(const viewport &viewport)
+	: viewport_(viewport)
 	, keydown_dispatcher_{[](const std::chrono::milliseconds &) { return false; }}
 	, keyup_dispatcher_{[](const std::chrono::milliseconds &) { return false; }}
 {

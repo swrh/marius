@@ -4,6 +4,7 @@
 
 #include "marius/key_dispatcher.hpp"
 #include "marius/sdl.hpp"
+#include "marius/viewport.hpp"
 
 namespace marius {
 
@@ -11,11 +12,11 @@ class
 scene
 {
 protected:
-	const sdl::renderer_ptr &renderer_;
+	const viewport &viewport_;
 	key_dispatcher<bool (const std::chrono::milliseconds &)> keydown_dispatcher_, keyup_dispatcher_;
 
 protected:
-	scene(const sdl::renderer_ptr &renderer);
+	scene(const viewport &viewport);
 
 public:
 	virtual ~scene();
