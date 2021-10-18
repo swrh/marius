@@ -6,6 +6,7 @@ namespace marius {
 
 player::player(const viewport &viewport)
 	: entity{viewport, "assets/player_tilesheet.png", 80, 110}
+	, tileset_{texture_, render_position_.w, render_position_.h}
 	, maximum_horizontal_speed_{50}
 	, maximum_vertical_speed_{75}
 	, acceleration_{2}

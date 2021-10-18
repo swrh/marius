@@ -3,8 +3,8 @@
 #include <chrono>
 
 #include "marius/sdl.hpp"
-#include "marius/tileset.hpp"
 #include "marius/viewport.hpp"
+#include "marius/tile.hpp"
 
 namespace marius {
 
@@ -17,7 +17,6 @@ protected:
 
 	SDL_Rect render_position_;
 	SDL_RendererFlip flip_;
-	const tileset tileset_;
 
 protected:
 	entity(const viewport &viewport, const char *texture_file, int tile_width, int tile_height);
