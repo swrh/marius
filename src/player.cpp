@@ -10,6 +10,7 @@ player::player(const viewport &viewport)
 	, maximum_vertical_speed_{75}
 	, acceleration_{2}
 	, gravity_{2}
+	, tile_number_{0}
 	, horizontal_speed_{0}
 	, vertical_speed_{0}
 	, left_{false}
@@ -88,12 +89,18 @@ player::update(const std::chrono::milliseconds &now)
 	position_.y += vertical_speed_ * diff.count();
 
 	// Select the player tile randomly
-	tile_ = left_ << 0 | right_ << 1 | up_ << 2 | down_ << 3;
+	tile_number_ = left_ << 0 | right_ << 1 | up_ << 2 | down_ << 3;
 
 	last_update_ = now;
 
 	render_position_.x = position_.x / 100;
 	render_position_.y = position_.y / 100;
+}
+
+void
+player::render() const
+{
+	entity::render(texture_, tileset_.get_tile(tile_number_));
 }
 
 }
