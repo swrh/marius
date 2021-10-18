@@ -14,6 +14,7 @@ private:
 	const int acceleration_, gravity_;
 
 	unsigned int tile_number_;
+	unsigned int tile_flip_;
 
 	int horizontal_speed_, vertical_speed_;
 

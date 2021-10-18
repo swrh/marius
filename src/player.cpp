@@ -11,6 +11,7 @@ player::player(const viewport &viewport)
 	, acceleration_{2}
 	, gravity_{2}
 	, tile_number_{0}
+	, tile_flip_{SDL_FLIP_NONE}
 	, horizontal_speed_{0}
 	, vertical_speed_{0}
 	, left_{false}
@@ -64,9 +65,9 @@ player::update(const std::chrono::milliseconds &now)
 		horizontal_speed_ += horizontal_direction * acceleration_;
 		horizontal_speed_ = std::min(maximum_horizontal_speed_, std::max(-maximum_horizontal_speed_, horizontal_speed_));
 		if (left_) {
-			flip_ |= SDL_FLIP_HORIZONTAL;
+			tile_flip_ |= SDL_FLIP_HORIZONTAL;
 		} else {
-			flip_ &= ~SDL_FLIP_HORIZONTAL;
+			tile_flip_ &= ~SDL_FLIP_HORIZONTAL;
 		}
 	} else if (horizontal_speed_ != 0) {
 		// Handle inertia
@@ -100,7 +101,7 @@ player::update(const std::chrono::milliseconds &now)
 void
 player::render() const
 {
-	entity::render(texture_, tileset_.get_tile(tile_number_));
+	render_texture(texture_, tileset_.get_tile(tile_number_), static_cast<SDL_RendererFlip>(tile_flip_));
 }
 
 }
