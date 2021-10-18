@@ -2,9 +2,9 @@
 
 namespace marius {
 
-scene_chaos::scene_chaos(const viewport &viewport)
-	: scene(viewport)
-	, player_(viewport_)
+scene_chaos::scene_chaos(const sdl::renderer_ptr &renderer)
+	: scene(renderer)
+	, player_(renderer_)
 {
 	keydown_dispatcher_.on(SDLK_a, [this](const std::chrono::milliseconds &) {
 		player_.set_left(true);

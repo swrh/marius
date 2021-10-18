@@ -6,7 +6,6 @@
 
 #include "marius/dispatcher.hpp"
 #include "marius/sdl.hpp"
-#include "marius/viewport.hpp"
 
 namespace marius {
 
@@ -17,7 +16,8 @@ class game
 private:
 	const sdl::init_ptr sdl_init_;
 	const img::init_ptr img_init_;
-	const viewport viewport_;
+	const sdl::window_ptr window_;
+	const sdl::renderer_ptr renderer_;
 
 	dispatcher<bool (const std::chrono::milliseconds &, const SDL_Event &)> event_dispatcher_;
 

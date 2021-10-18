@@ -3,7 +3,6 @@
 #include <chrono>
 
 #include "marius/sdl.hpp"
-#include "marius/viewport.hpp"
 #include "marius/tile.hpp"
 
 namespace marius {
@@ -12,13 +11,13 @@ class
 entity
 {
 protected:
-	const viewport &viewport_;
+	const sdl::renderer_ptr &renderer_;
 
 	SDL_Rect render_position_;
 	SDL_RendererFlip flip_;
 
 protected:
-	entity(const viewport &viewport, int tile_width, int tile_height);
+	entity(const sdl::renderer_ptr &renderer, int tile_width, int tile_height);
 
 protected:
 	void render_tile(const tile &tile) const;

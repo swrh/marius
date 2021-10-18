@@ -2,8 +2,8 @@
 
 namespace marius {
 
-tiles::tiles(const viewport &viewport, const char *texture_file, int width, int height)
-	: texture_{img::load_texture(viewport.get_renderer(), texture_file)}
+tiles::tiles(const sdl::renderer_ptr &renderer, const char *texture_file, int width, int height)
+	: texture_{img::load_texture(renderer, texture_file)}
 	, tiles_{make_vector_of_tile(texture_, width, height)}
 {
 }

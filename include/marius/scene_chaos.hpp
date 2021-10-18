@@ -1,8 +1,8 @@
 #pragma once
 
-#include "marius/scene.hpp"
 #include "marius/player.hpp"
-#include "marius/viewport.hpp"
+#include "marius/scene.hpp"
+#include "marius/sdl.hpp"
 
 namespace marius {
 
@@ -14,7 +14,7 @@ private:
 	player player_;
 
 public:
-	scene_chaos(const viewport &viewport);
+	scene_chaos(const sdl::renderer_ptr &renderer);
 
 	void update(const std::chrono::milliseconds &now) override;
 	void render() override;
