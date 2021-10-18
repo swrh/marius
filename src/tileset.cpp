@@ -3,7 +3,6 @@
 namespace marius {
 
 tileset::tileset(const sdl::texture_ptr &texture, int tile_width, int tile_height)
-	: texture_(texture)
 {
 	int texture_width, texture_height;
 	if (SDL_QueryTexture(texture.get(), nullptr, nullptr, &texture_width, &texture_height) != 0) {
@@ -20,7 +19,7 @@ tileset::tileset(const sdl::texture_ptr &texture, int tile_width, int tile_heigh
 
 	tiles_.reserve(n);
 	for (int i = 0; i < n; ++i) {
-		tiles_.push_back(SDL_Rect{
+		tiles_.emplace_back(texture, SDL_Rect{
 				.x = (i % nx) * tile_width,
 				.y = (i / nx) * tile_height,
 				.w = tile_width,
@@ -29,7 +28,7 @@ tileset::tileset(const sdl::texture_ptr &texture, int tile_width, int tile_heigh
 	}
 }
 
-const SDL_Rect &
+const tile &
 tileset::get_tile(const unsigned int n) const
 {
 	if (n >= tiles_.size()) {

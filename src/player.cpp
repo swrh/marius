@@ -101,7 +101,7 @@ player::update(const std::chrono::milliseconds &now)
 void
 player::render() const
 {
-	render_texture(texture_, tileset_.get_tile(tile_number_), static_cast<SDL_RendererFlip>(tile_flip_));
+	render_texture(texture_, tileset_.get_tile(tile_number_).get_rect(), static_cast<SDL_RendererFlip>(tile_flip_));
 }
 
 }
