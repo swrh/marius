@@ -5,8 +5,8 @@
 namespace marius {
 
 player::player(const viewport &viewport)
-	: entity{viewport, "assets/player_tilesheet.png", 80, 110}
-	, tileset_{texture_, render_position_.w, render_position_.h}
+	: entity{viewport, 80, 110}
+	, tiles_{viewport_, "assets/player_tilesheet.png", render_position_.w, render_position_.h}
 	, maximum_horizontal_speed_{50}
 	, maximum_vertical_speed_{75}
 	, acceleration_{2}
@@ -101,7 +101,7 @@ player::update(const std::chrono::milliseconds &now)
 void
 player::render() const
 {
-	render_tile(tileset_.get_tile(tile_number_));
+	render_tile(tiles_.get(tile_number_));
 }
 
 }

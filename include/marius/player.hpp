@@ -1,7 +1,7 @@
 #pragma once
 
 #include "marius/entity.hpp"
-#include "marius/tileset.hpp"
+#include "marius/tiles.hpp"
 #include "marius/viewport.hpp"
 
 namespace marius {
@@ -11,7 +11,7 @@ player
 : public entity
 {
 private:
-	const tileset tileset_;
+	const tiles tiles_;
 
 	const int maximum_horizontal_speed_, maximum_vertical_speed_;
 	const int acceleration_, gravity_;

@@ -13,13 +13,12 @@ entity
 {
 protected:
 	const viewport &viewport_;
-	const sdl::texture_ptr texture_;
 
 	SDL_Rect render_position_;
 	SDL_RendererFlip flip_;
 
 protected:
-	entity(const viewport &viewport, const char *texture_file, int tile_width, int tile_height);
+	entity(const viewport &viewport, int tile_width, int tile_height);
 
 protected:
 	void render_tile(const tile &tile) const;

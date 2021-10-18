@@ -2,9 +2,8 @@
 
 namespace marius {
 
-entity::entity(const viewport &viewport, const char *texture_file, int tile_width, int tile_height)
+entity::entity(const viewport &viewport, int tile_width, int tile_height)
 	: viewport_{viewport}
-	, texture_{img::load_texture(viewport_.get_renderer(), texture_file)}
 	, render_position_{0, 0, tile_width, tile_height}
 	, flip_{SDL_FLIP_NONE}
 {
