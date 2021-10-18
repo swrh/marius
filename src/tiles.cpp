@@ -4,7 +4,7 @@ namespace marius {
 
 tiles::tiles(const sdl::renderer_ptr &renderer, const char *texture_file, int width, int height)
 	: texture_{img::load_texture(renderer, texture_file)}
-	, tiles_{make_vector_of_tile(texture_, width, height)}
+	, data_{make_vector_of_tile(texture_, width, height)}
 {
 }
 
@@ -41,11 +41,11 @@ tiles::make_vector_of_tile(const sdl::texture_ptr &texture, int width, int heigh
 const tile &
 tiles::get(const unsigned int n) const
 {
-	if (n >= tiles_.size()) {
+	if (n >= data_.size()) {
 		THROW(std::runtime_error("invalid tile number"));
 	}
 
-	return tiles_[n];
+	return data_[n];
 }
 
 }

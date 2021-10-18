@@ -10,7 +10,7 @@ tiles
 {
 private:
 	const sdl::texture_ptr texture_;
-	std::vector<tile> tiles_;
+	std::vector<tile> data_;
 
 public:
 	tiles(const sdl::renderer_ptr &renderer, const char *texture_file, int width, int height);
