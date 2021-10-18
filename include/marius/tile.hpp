@@ -18,7 +18,7 @@ public:
 public:
 	const sdl::texture_ptr &get_texture() const;
 	const SDL_Rect &get_rect() const;
-	SDL_RendererFlip get_flip() const;
+	SDL_RendererFlip get_flip(SDL_RendererFlip flip = SDL_FLIP_NONE) const;
 };
 
 }

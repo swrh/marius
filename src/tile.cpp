@@ -22,9 +22,15 @@ tile::get_rect() const
 }
 
 SDL_RendererFlip
-tile::get_flip() const
+tile::get_flip(SDL_RendererFlip flip) const
 {
-	return flip_;
+	if (flip_ & SDL_FLIP_HORIZONTAL) {
+		flip = static_cast<SDL_RendererFlip>(flip ^ SDL_FLIP_HORIZONTAL);
+	}
+	if (flip_ & SDL_FLIP_VERTICAL) {
+		flip = static_cast<SDL_RendererFlip>(flip ^ SDL_FLIP_VERTICAL);
+	}
+	return flip;
 }
 
 }
