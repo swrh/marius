@@ -22,7 +22,7 @@ private:
 
 	bool left_, right_, up_, down_;
 	bool jump_;
-	SDL_Rect position_;
+	SDL_Point position_;
 
 	std::chrono::milliseconds last_update_;
 

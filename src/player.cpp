@@ -19,7 +19,10 @@ player::player(const sdl::renderer_ptr &renderer)
 	, up_{false}
 	, down_{false}
 	, jump_{false}
-	, position_{render_position_}
+	, position_{
+		.x = render_position_.x,
+		.y = render_position_.y,
+	}
 	, last_update_{0}
 {
 }

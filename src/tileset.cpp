@@ -38,6 +38,12 @@ tileset::make_tiles(const sdl::texture_ptr &texture, int width, int height)
 	return tiles;
 }
 
+unsigned int
+tileset::get_size() const
+{
+	return data_.size();
+}
+
 const tile &
 tileset::get(const unsigned int n) const
 {
