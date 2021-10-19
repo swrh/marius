@@ -1,15 +1,15 @@
-#include "marius/tiles.hpp"
+#include "marius/tileset.hpp"
 
 namespace marius {
 
-tiles::tiles(const sdl::renderer_ptr &renderer, const char *texture_file, int width, int height)
+tileset::tileset(const sdl::renderer_ptr &renderer, const char *texture_file, int width, int height)
 	: texture_{img::load_texture(renderer, texture_file)}
-	, data_{make_vector_of_tile(texture_, width, height)}
+	, data_{make_tiles(texture_, width, height)}
 {
 }
 
 std::vector<tile>
-tiles::make_vector_of_tile(const sdl::texture_ptr &texture, int width, int height)
+tileset::make_tiles(const sdl::texture_ptr &texture, int width, int height)
 {
 	int texture_width, texture_height;
 	if (SDL_QueryTexture(texture.get(), nullptr, nullptr, &texture_width, &texture_height) != 0) {
@@ -17,7 +17,7 @@ tiles::make_vector_of_tile(const sdl::texture_ptr &texture, int width, int heigh
 	}
 
 	if (width > texture_width || height > texture_height) {
-		THROW(std::runtime_error("tile larger than its texture"));
+		THROW(std::runtime_error("tile is larger than its texture"));
 	}
 
 	const int nx = texture_width / width;
@@ -39,7 +39,7 @@ tiles::make_vector_of_tile(const sdl::texture_ptr &texture, int width, int heigh
 }
 
 const tile &
-tiles::get(const unsigned int n) const
+tileset::get(const unsigned int n) const
 {
 	if (n >= data_.size()) {
 		THROW(std::runtime_error("invalid tile number"));

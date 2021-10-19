@@ -2,7 +2,7 @@
 
 #include "marius/entity.hpp"
 #include "marius/sdl.hpp"
-#include "marius/tiles.hpp"
+#include "marius/tileset.hpp"
 
 namespace marius {
 
@@ -11,7 +11,7 @@ player
 : public entity
 {
 private:
-	const tiles tiles_;
+	const tileset tileset_;
 
 	const int maximum_horizontal_speed_, maximum_vertical_speed_;
 	const int acceleration_, gravity_;
