@@ -1,16 +1,15 @@
 #include "marius/player.hpp"
+#include <iostream>
 
 #include <cstdlib>
 
 namespace marius {
 
 player::player(const sdl::renderer_ptr &renderer)
-	: entity{renderer, 80, 110}
-	, tileset_{renderer_, "assets/player_tilesheet.png", render_position_.w, render_position_.h}
-	, maximum_horizontal_speed_{50}
-	, maximum_vertical_speed_{75}
-	, acceleration_{2}
-	, gravity_{2}
+	: entity{renderer, width_, height_}
+	, tileset_{renderer_, "assets/player_tilesheet.png", width_, height_}
+	, maximum_horizontal_speed_{.5}
+	, maximum_vertical_speed_{.75}
 	, tile_number_{0}
 	, horizontal_speed_{0}
 	, vertical_speed_{0}
@@ -19,10 +18,8 @@ player::player(const sdl::renderer_ptr &renderer)
 	, up_{false}
 	, down_{false}
 	, jump_{false}
-	, position_{
-		.x = render_position_.x,
-		.y = render_position_.y,
-	}
+	, position_x_{0}
+	, position_y_{0}
 	, last_update_{0}
 {
 }
@@ -60,13 +57,14 @@ player::set_down(bool enabled)
 void
 player::update(const std::chrono::milliseconds &now)
 {
-	auto diff = now - last_update_;
+	const double ms = (now - last_update_).count();
 
 	// Horizontal movement
+	constexpr double acceleration = .02;
 	if (left_ != right_) {
 		// Handle thrust
 		int horizontal_direction = right_ ? 1 : -1;
-		horizontal_speed_ += horizontal_direction * acceleration_;
+		horizontal_speed_ += horizontal_direction * acceleration;
 		horizontal_speed_ = std::min(maximum_horizontal_speed_, std::max(-maximum_horizontal_speed_, horizontal_speed_));
 		if (left_) {
 			flip_ = static_cast<SDL_RendererFlip>(flip_ | SDL_FLIP_HORIZONTAL);
@@ -76,10 +74,9 @@ player::update(const std::chrono::milliseconds &now)
 	} else if (horizontal_speed_ != 0) {
 		// Handle inertia
 		int horizontal_direction = horizontal_speed_ / std::abs(horizontal_speed_);
-		horizontal_speed_ -= horizontal_direction * acceleration_;
-		horizontal_speed_ = horizontal_direction * std::max(0, horizontal_direction * horizontal_speed_);
+		horizontal_speed_ -= horizontal_direction * acceleration;
+		horizontal_speed_ = horizontal_direction * std::max(0., horizontal_direction * horizontal_speed_);
 	}
-	position_.x += horizontal_speed_ * diff.count();
 
 	// Vertical movement
 	if (jump_) {
@@ -88,18 +85,22 @@ player::update(const std::chrono::milliseconds &now)
 		jump_ = false;
 	} else {
 		// Handle gravity
-		vertical_speed_ += gravity_;
+		constexpr double gravity = .02;
+		vertical_speed_ += gravity;
 		vertical_speed_ = std::min(maximum_vertical_speed_, vertical_speed_);
 	}
-	position_.y += vertical_speed_ * diff.count();
+
+	// Reposition the entity
+	position_x_ += horizontal_speed_ * ms;
+	position_y_ += vertical_speed_ * ms;
 
 	// Select the player tile randomly
 	tile_number_ = left_ << 0 | right_ << 1 | up_ << 2 | down_ << 3;
 
 	last_update_ = now;
 
-	render_position_.x = position_.x / 100;
-	render_position_.y = position_.y / 100;
+	render_position_.x = std::round(position_x_);
+	render_position_.y = std::round(position_y_);
 }
 
 void

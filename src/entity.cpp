@@ -2,9 +2,9 @@
 
 namespace marius {
 
-entity::entity(const sdl::renderer_ptr &renderer, int tile_width, int tile_height)
+entity::entity(const sdl::renderer_ptr &renderer, int width, int height)
 	: renderer_{renderer}
-	, render_position_{0, 0, tile_width, tile_height}
+	, render_position_{0, 0, width, height}
 	, flip_{SDL_FLIP_NONE}
 {
 }

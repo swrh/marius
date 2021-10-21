@@ -11,18 +11,20 @@ player
 : public entity
 {
 private:
+	static constexpr int width_ = 80;
+	static constexpr int height_ = 110;
+
 	const tileset tileset_;
 
-	const int maximum_horizontal_speed_, maximum_vertical_speed_;
-	const int acceleration_, gravity_;
+	const double maximum_horizontal_speed_, maximum_vertical_speed_;
 
 	unsigned int tile_number_;
 
-	int horizontal_speed_, vertical_speed_;
+	double horizontal_speed_, vertical_speed_;
 
 	bool left_, right_, up_, down_;
 	bool jump_;
-	SDL_Point position_;
+	double position_x_, position_y_;
 
 	std::chrono::milliseconds last_update_;
 

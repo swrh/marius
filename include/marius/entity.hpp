@@ -17,7 +17,7 @@ protected:
 	SDL_RendererFlip flip_;
 
 protected:
-	entity(const sdl::renderer_ptr &renderer, int tile_width, int tile_height);
+	entity(const sdl::renderer_ptr &renderer, int width, int height);
 
 protected:
 	void render_tile(const tile &tile) const;
