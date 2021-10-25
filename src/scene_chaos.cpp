@@ -53,6 +53,8 @@ scene_chaos::scene_chaos(const sdl::renderer_ptr &renderer)
 	}
 	objects_.emplace_back(renderer, packed_.get(64));
 	objects_.back().move(SDL_Point{ .x = i++ * 16, .y = 128, });
+
+	player_.set_objects(objects_);
 }
 
 void

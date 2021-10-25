@@ -1,7 +1,9 @@
 #pragma once
 
 #include "marius/entity.hpp"
+#include "marius/object.hpp"
 #include "marius/sdl.hpp"
+#include "marius/tile.hpp"
 #include "marius/tileset.hpp"
 
 namespace marius {
@@ -28,8 +30,12 @@ private:
 
 	std::chrono::milliseconds last_update_;
 
+	const std::vector<object> *objects_;
+
 public:
 	player(const sdl::renderer_ptr &renderer);
+
+	void set_objects(const std::vector<object> &objects);
 
 	void set_left(bool enabled);
 	void set_right(bool enabled);
