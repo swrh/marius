@@ -60,7 +60,7 @@ player::update(const std::chrono::milliseconds &now)
 	const double ms = (now - last_update_).count();
 
 	// Horizontal movement
-	constexpr double acceleration = .02;
+	const double acceleration = .001 * ms;
 	if (left_ != right_) {
 		// Handle thrust
 		int horizontal_direction = right_ ? 1 : -1;
@@ -85,7 +85,7 @@ player::update(const std::chrono::milliseconds &now)
 		jump_ = false;
 	} else {
 		// Handle gravity
-		constexpr double gravity = .02;
+		const double gravity = .0015 * ms;
 		vertical_speed_ += gravity;
 		vertical_speed_ = std::min(maximum_vertical_speed_, vertical_speed_);
 	}
