@@ -7,10 +7,12 @@ namespace marius {
 
 player::player(const sdl::renderer_ptr &renderer)
 	: entity{renderer, width_, height_}
-	, tileset_{renderer_, "assets/player_tilesheet.png", width_, height_}
-	, maximum_horizontal_speed_{.5}
-	, maximum_vertical_speed_{.75}
-	, tile_number_{0}
+	, idle_{renderer_, "assets/mr-man/idle.png", width_, height_}
+	, run_{renderer_, "assets/mr-man/run.png", width_, height_}
+	, jumping_{renderer_, "assets/mr-man/jumping.png", width_, height_}
+	, maximum_horizontal_speed_{.1}
+	, maximum_vertical_speed_{.2}
+	, current_tile_{nullptr}
 	, horizontal_speed_{0}
 	, vertical_speed_{0}
 	, left_{false}
@@ -57,7 +59,7 @@ player::set_down(bool enabled)
 void
 player::update(const std::chrono::milliseconds &now)
 {
-	const double ms = (now - last_update_).count();
+	const auto ms = (now - last_update_).count();
 
 	// Horizontal movement
 	const double acceleration = .001 * ms;
@@ -85,7 +87,7 @@ player::update(const std::chrono::milliseconds &now)
 		jump_ = false;
 	} else {
 		// Handle gravity
-		const double gravity = .0015 * ms;
+		const double gravity = .0005 * ms;
 		vertical_speed_ += gravity;
 		vertical_speed_ = std::min(maximum_vertical_speed_, vertical_speed_);
 	}
@@ -94,8 +96,15 @@ player::update(const std::chrono::milliseconds &now)
 	position_x_ += horizontal_speed_ * ms;
 	position_y_ += vertical_speed_ * ms;
 
-	// Select the player tile randomly
-	tile_number_ = left_ << 0 | right_ << 1 | up_ << 2 | down_ << 3;
+	const tileset *tileset = &idle_;
+	if (vertical_speed_ != 0) {
+		tileset = &jumping_;
+	} else if (horizontal_speed_ != 0) {
+		tileset = &run_;
+	}
+
+	unsigned int i = (now.count() / 100) % tileset->get_size();
+	current_tile_ = &tileset->get(i);
 
 	last_update_ = now;
 
@@ -106,7 +115,9 @@ player::update(const std::chrono::milliseconds &now)
 void
 player::render() const
 {
-	render_tile(tileset_.get(tile_number_));
+	if (current_tile_) {
+		render_tile(*current_tile_);
+	}
 }
 
 }

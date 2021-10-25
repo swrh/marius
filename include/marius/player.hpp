@@ -11,14 +11,14 @@ player
 : public entity
 {
 private:
-	static constexpr int width_ = 80;
-	static constexpr int height_ = 110;
+	static constexpr int width_ = 16;
+	static constexpr int height_ = 16;
 
-	const tileset tileset_;
+	const tileset idle_, run_, jumping_;
 
 	const double maximum_horizontal_speed_, maximum_vertical_speed_;
 
-	unsigned int tile_number_;
+	const tile *current_tile_;
 
 	double horizontal_speed_, vertical_speed_;
 

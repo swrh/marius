@@ -4,7 +4,7 @@ namespace marius {
 
 scene_chaos::scene_chaos(const sdl::renderer_ptr &renderer)
 	: scene(renderer)
-	, packed_{renderer_, "assets/tiles_packed.png", 18, 18}
+	, packed_{renderer_, "assets/grassland/terrain.png", 16, 16}
 	, player_(renderer_)
 {
 	keydown_dispatcher_.on(SDLK_a, [this](const std::chrono::milliseconds &) {
@@ -43,14 +43,16 @@ scene_chaos::scene_chaos(const sdl::renderer_ptr &renderer)
 		return true;
 	});
 
-	for (int i = 0; i < static_cast<int>(packed_.get_size()); ++i) {
-		objects_.emplace_back(renderer, packed_.get(i));
-		object &o = objects_.back();
-		o.move(SDL_Point{
-				.x = (i & 0xf) * 18,
-				.y = ((i & ~0xf) >> 4) * 18,
-				});
+	// Draw the ground terrain
+	int i = 0;
+	objects_.emplace_back(renderer, packed_.get(60));
+	objects_.back().move(SDL_Point{ .x = i++ * 16, .y = 128, });
+	while (i < 13) {
+		objects_.emplace_back(renderer, packed_.get(61));
+		objects_.back().move(SDL_Point{ .x = i++ * 16, .y = 128, });
 	}
+	objects_.emplace_back(renderer, packed_.get(64));
+	objects_.back().move(SDL_Point{ .x = i++ * 16, .y = 128, });
 }
 
 void
