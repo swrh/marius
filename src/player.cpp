@@ -100,17 +100,14 @@ player::update(const std::chrono::milliseconds &now)
 	}
 
 	// Reposition the entity
-	int x_shift = std::round(horizontal_speed_ * ms);
-	position_x_ += x_shift;
-	int y_shift = std::round(vertical_speed_ * ms);
-	position_y_ += y_shift;
+	double x_shift = horizontal_speed_ * ms;
+	double y_shift = vertical_speed_ * ms;
 
 	if (objects_) {
 		SDL_Rect new_position = position_;
-		new_position.y = std::round(position_y_);
+		new_position.y = std::round(position_y_ + y_shift);
 		for (const object &o : *objects_) {
 			if (o.collides_with(new_position)) {
-				position_y_ = position_.y;
 				vertical_speed_ = 0;
 				y_shift = 0;
 				break;
@@ -118,10 +115,13 @@ player::update(const std::chrono::milliseconds &now)
 		}
 	}
 
+	position_x_ += x_shift;
+	position_y_ += y_shift;
+
 	const tileset *tileset = &idle_;
-	if (y_shift != 0) {
+	if (std::round(y_shift) != 0) {
 		tileset = &jumping_;
-	} else if (x_shift != 0) {
+	} else if (std::round(x_shift) != 0) {
 		tileset = &run_;
 	}
 
