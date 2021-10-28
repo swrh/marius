@@ -16,7 +16,7 @@ The simplest platform game that could be possibly made.
 
 ## Assets
 
-The assets were downloaded from the following web pages:
+The assets were downloaded from the following places:
 
   - https://grafxkid.itch.io/
 
