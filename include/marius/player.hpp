@@ -26,7 +26,6 @@ private:
 
 	bool left_, right_, up_, down_;
 	bool jump_;
-	double position_x_, position_y_;
 
 	std::chrono::milliseconds last_update_;
 

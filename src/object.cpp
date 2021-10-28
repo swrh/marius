@@ -22,8 +22,8 @@ object::render() const
 void
 object::move(const SDL_Point &point)
 {
-	position_.x += point.x;
-	position_.y += point.y;
+	position_.x_ += point.x;
+	position_.y_ += point.y;
 }
 
 }

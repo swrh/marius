@@ -20,8 +20,6 @@ player::player(const sdl::renderer_ptr &renderer)
 	, up_{false}
 	, down_{false}
 	, jump_{false}
-	, position_x_{0}
-	, position_y_{0}
 	, last_update_{0}
 	, objects_{nullptr}
 {
@@ -104,10 +102,10 @@ player::update(const std::chrono::milliseconds &now)
 	double y_shift = vertical_speed_ * ms;
 
 	if (objects_) {
-		SDL_Rect new_position = position_;
-		new_position.y = std::round(position_y_ + y_shift);
+		vector2f new_position = position_;
+		new_position.y_ += y_shift;
 		for (const object &o : *objects_) {
-			if (o.collides_with(new_position)) {
+			if (o.collides_with(new_position, size_)) {
 				vertical_speed_ = 0;
 				y_shift = 0;
 				break;
@@ -115,8 +113,8 @@ player::update(const std::chrono::milliseconds &now)
 		}
 	}
 
-	position_x_ += x_shift;
-	position_y_ += y_shift;
+	position_.x_ += x_shift;
+	position_.y_ += y_shift;
 
 	const tileset *tileset = &idle_;
 	if (std::round(y_shift) != 0) {
@@ -129,9 +127,6 @@ player::update(const std::chrono::milliseconds &now)
 	current_tile_ = &tileset->get(i);
 
 	last_update_ = now;
-
-	position_.x = std::round(position_x_);
-	position_.y = std::round(position_y_);
 }
 
 void

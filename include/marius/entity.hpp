@@ -4,6 +4,7 @@
 
 #include "marius/sdl.hpp"
 #include "marius/tile.hpp"
+#include "marius/vector2f.hpp"
 
 namespace marius {
 
@@ -13,7 +14,9 @@ entity
 protected:
 	const sdl::renderer_ptr &renderer_;
 
-	SDL_Rect position_;
+	vector2f position_;
+	vector2f size_;
+
 	SDL_RendererFlip flip_;
 
 protected:
@@ -23,7 +26,7 @@ protected:
 	void render_tile(const tile &tile) const;
 
 public:
-	bool collides_with(const SDL_Rect &position) const;
+	bool collides_with(const vector2f &position, const vector2f &size) const;
 
 	virtual void update(const std::chrono::milliseconds &now) = 0;
 	virtual void render() const = 0;
