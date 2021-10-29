@@ -10,11 +10,8 @@ player::player(const sdl::renderer_ptr &renderer)
 	, idle_{renderer_, "assets/mr-man/idle.png", width_, height_}
 	, run_{renderer_, "assets/mr-man/run.png", width_, height_}
 	, jumping_{renderer_, "assets/mr-man/jumping.png", width_, height_}
-	, maximum_horizontal_speed_{.1}
-	, maximum_vertical_speed_{.2}
+	, speed_limit_{.1, .2}
 	, current_tile_{nullptr}
-	, horizontal_speed_{0}
-	, vertical_speed_{0}
 	, left_{false}
 	, right_{false}
 	, up_{false}
@@ -71,55 +68,57 @@ player::update(const std::chrono::milliseconds &now)
 	if (left_ != right_) {
 		// Handle thrust
 		int horizontal_direction = right_ ? 1 : -1;
-		horizontal_speed_ += horizontal_direction * acceleration;
-		horizontal_speed_ = std::min(maximum_horizontal_speed_, std::max(-maximum_horizontal_speed_, horizontal_speed_));
+		speed_.x_ += horizontal_direction * acceleration;
+		speed_.x_ = std::min(speed_limit_.x_, std::max(-speed_limit_.x_, speed_.x_));
 		if (left_) {
 			flip_ = static_cast<SDL_RendererFlip>(flip_ | SDL_FLIP_HORIZONTAL);
 		} else {
 			flip_ = static_cast<SDL_RendererFlip>(flip_ & ~SDL_FLIP_HORIZONTAL);
 		}
-	} else if (horizontal_speed_ != 0) {
+	} else if (speed_.x_ != 0) {
 		// Handle inertia
-		int horizontal_direction = horizontal_speed_ / std::abs(horizontal_speed_);
-		horizontal_speed_ -= horizontal_direction * acceleration;
-		horizontal_speed_ = horizontal_direction * std::max(0., horizontal_direction * horizontal_speed_);
+		int horizontal_direction = speed_.x_ / std::abs(speed_.x_);
+		speed_.x_ -= horizontal_direction * acceleration;
+		speed_.x_ = horizontal_direction * std::max(0., horizontal_direction * speed_.x_);
 	}
 
 	// Vertical movement
 	if (jump_) {
 		// Handle jump
-		vertical_speed_ = -maximum_vertical_speed_;
+		speed_.y_ = -speed_limit_.y_;
 		jump_ = false;
 	} else {
 		// Handle gravity
 		const double gravity = .0005 * ms;
-		vertical_speed_ += gravity;
-		vertical_speed_ = std::min(maximum_vertical_speed_, vertical_speed_);
+		speed_.y_ += gravity;
+		speed_.y_ = std::min(speed_limit_.y_, speed_.y_);
 	}
 
 	// Reposition the entity
-	double x_shift = horizontal_speed_ * ms;
-	double y_shift = vertical_speed_ * ms;
+	vector2f movement{
+		.x_ = speed_.x_ * ms,
+		.y_ = speed_.y_ * ms,
+	};
 
 	if (objects_) {
 		vector2f new_position = position_;
-		new_position.y_ += y_shift;
+		new_position.y_ += movement.y_;
 		for (const object &o : *objects_) {
 			if (o.collides_with(new_position, size_)) {
-				vertical_speed_ = 0;
-				y_shift = 0;
+				speed_.y_ = 0;
+				movement.y_ = 0;
 				break;
 			}
 		}
 	}
 
-	position_.x_ += x_shift;
-	position_.y_ += y_shift;
+	position_.x_ += movement.x_;
+	position_.y_ += movement.y_;
 
 	const tileset *tileset = &idle_;
-	if (std::round(y_shift) != 0) {
+	if (std::round(movement.y_) != 0) {
 		tileset = &jumping_;
-	} else if (std::round(x_shift) != 0) {
+	} else if (std::round(movement.x_) != 0) {
 		tileset = &run_;
 	}
 

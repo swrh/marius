@@ -18,11 +18,11 @@ private:
 
 	const tileset idle_, run_, jumping_;
 
-	const double maximum_horizontal_speed_, maximum_vertical_speed_;
+	const vector2f speed_limit_;
 
 	const tile *current_tile_;
 
-	double horizontal_speed_, vertical_speed_;
+	vector2f speed_;
 
 	bool left_, right_, up_, down_;
 	bool jump_;
