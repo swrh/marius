@@ -18,14 +18,13 @@ private:
 
 	const tileset idle_, run_, jumping_;
 
-	const vector2f speed_limit_;
-
 	const tile *current_tile_;
 
-	vector2f speed_;
+	vector2f velocity_;
 
 	bool left_, right_, up_, down_;
 	bool jump_;
+	bool on_the_ground_;
 
 	std::chrono::milliseconds last_update_;
 
