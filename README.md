@@ -10,6 +10,14 @@ The simplest platform game that could be possibly made.
     $ cmake ..
     $ make
 
+In MacOS:
+
+    $ brew install cmake boost sdl2 sdl2_image binutils
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+
 ## Running
 
     $ ./marius

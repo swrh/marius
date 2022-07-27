@@ -17,12 +17,30 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
+if(APPLE)
+	set(BOOST_STACKTRACE_PACKAGE
+		stacktrace_addr2line
+		)
+	set(BOOST_STACKTRACE_DEFINITIONS
+		BOOST_STACKTRACE_USE_ADDR2LINE
+		_GNU_SOURCE
+		BOOST_STACKTRACE_ADDR2LINE_LOCATION=/usr/local/opt/binutils/bin/addr2line
+		)
+else()
+	set(BOOST_STACKTRACE_PACKAGE
+		stacktrace_backtrace
+		)
+	set(BOOST_STACKTRACE_DEFINITIONS
+		BOOST_STACKTRACE_USE_BACKTRACE
+		)
+endif()
+
 find_package(PkgConfig REQUIRED)
 
 find_package(Boost 1.71.0 REQUIRED COMPONENTS
 	log
 	program_options
-	stacktrace_backtrace
+	${BOOST_STACKTRACE_PACKAGE}
 	)
 
 pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
@@ -41,7 +59,7 @@ add_executable(marius
 
 target_compile_definitions(marius
 	PRIVATE
-		BOOST_STACKTRACE_USE_BACKTRACE
+		${BOOST_STACKTRACE_DEFINITIONS}
 	)
 
 target_link_libraries(marius
@@ -50,7 +68,7 @@ target_link_libraries(marius
 		PkgConfig::SDL2_IMAGE
 		Boost::log
 		Boost::program_options
-		Boost::stacktrace_backtrace
+		Boost::${BOOST_STACKTRACE_PACKAGE}
 		dl
 	)
 
