@@ -3,6 +3,8 @@
 #include "marius/sdl.hpp"
 #include "marius/tile.hpp"
 
+#include <vector>
+
 namespace marius {
 
 class

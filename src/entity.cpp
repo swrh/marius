@@ -1,5 +1,7 @@
 #include "marius/entity.hpp"
 
+#include <cmath>
+
 namespace marius {
 
 entity::entity(const sdl::renderer_ptr &renderer, int width, int height)
