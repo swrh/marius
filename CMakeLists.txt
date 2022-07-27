@@ -17,13 +17,16 @@ elseif(${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
+find_package(PkgConfig REQUIRED)
+
 find_package(Boost 1.71.0 REQUIRED COMPONENTS
 	log
 	program_options
 	stacktrace_backtrace
 	)
 
-find_package(SDL2 REQUIRED)
+pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+pkg_check_modules(SDL2_IMAGE REQUIRED IMPORTED_TARGET sdl2_image)
 
 file(GLOB_RECURSE marius_SOURCES
 	include/*.hpp
@@ -43,8 +46,8 @@ target_compile_definitions(marius
 
 target_link_libraries(marius
 	PUBLIC
-		${SDL2_LIBRARIES}
-		SDL2_image
+		PkgConfig::SDL2
+		PkgConfig::SDL2_IMAGE
 		Boost::log
 		Boost::program_options
 		Boost::stacktrace_backtrace
