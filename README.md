@@ -27,6 +27,7 @@ In MacOS:
 The assets were downloaded from the following places:
 
   - https://grafxkid.itch.io/
+  - https://opengameart.org/content/ascii-bitmap-font-oldschool
 
 ## Resources
 
