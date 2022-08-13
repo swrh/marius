@@ -38,3 +38,4 @@ game.
 * [Building a Physics Engine with C++ and Simulating Machines](https://www.youtube.com/watch?v=TtgS-b191V0)
 * [Learning the Runge-Kutta Method 1. Basic Runge-Kutta](https://www.youtube.com/watch?v=8_PnCSsA_BQ)
 * [Essential Mathematics For Aspiring Game Developers](https://www.youtube.com/watch?v=DPfxjQ6sqrc)
+* [Math for Game Developers - Jumping and Gravity (Time Delta, Game Loop)](https://www.youtube.com/watch?v=c4b9lCfSDQM)
